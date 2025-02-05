@@ -7,6 +7,7 @@ export interface IUser{
     password:string;
     createdAt?: Date;
     updatedAt?: Date;
+    isValidPassword(password:string):Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>({
