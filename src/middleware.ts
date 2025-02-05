@@ -36,7 +36,7 @@ export const config = {
         '/',
         '/login',
         '/register',
-        '/api/auth/:path',
+        '/api/auth/:path*',
         '/api/videos'
     ]
 }
