@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 
 function Register() {
@@ -102,7 +103,7 @@ function Register() {
                 value={confirmPassword}
                 onChange={(e)=>(setConfirmPassword(e.target.value))} 
               />
-              <div className="card-actions justify-center pt-6">
+              <div className="card-actions justify-center pt-4">
               {loading ? (<span className="loading loading-infinity loading-lg text-error"></span>):(
                 <button className="btn btn-outline btn-accent"
                 type="submit">Register
@@ -110,6 +111,7 @@ function Register() {
                 </button>
               )}
               </div>
+              <p className='text-center pt-2'>have an account!<Link href={'/login'} className='hover:text-accent'> Login</Link></p>
           </div>
           </form>
         </div>
