@@ -1,36 +1,35 @@
-import React from "react";
-import { ImageKitProvider } from "imagekitio-next";
+"use client";
+
 import { SessionProvider } from "next-auth/react";
+import { ImageKitProvider } from "imagekitio-next";
 
-const urlEndpoint = process.env.IMAGEKIT_URL_ENDPOINT!;
-const publicKey = process.env.IMAGEKIT_PUBLIC_KEY !;
 
-export default function Provider({children}:{children:React.ReactNode}) {
-    const authenticator = async () => {
-        try {
-          const response = await fetch("/api/imagekit-auth");
+const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT!;
+const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY!;
+
+export default function Providers({ children }: { children: React.ReactNode }) {
+  const authenticator = async () => {
+    try {
+      const res = await fetch("/api/imagekit-auth");
+      if (!res.ok) throw new Error("Failed to authenticate");
+      return res.json();
+    } catch (error) {
+      console.error("ImageKit authentication error:", error);
+      throw error;
+    }
+  };
+
+  return (
+    <SessionProvider refetchInterval={5 * 60}>
       
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Request failed with status ${response.status}: ${errorText}`);
-          }
+        <ImageKitProvider
+          publicKey={publicKey}
+          urlEndpoint={urlEndpoint}
+          authenticator={authenticator}
+        >
+          {children}
+        </ImageKitProvider>
       
-          const data = await response.json();
-          const { signature, expire, token } = data;
-          return { signature, expire, token };
-        } catch (error) {
-          throw new Error(`Authentication request failed: ${error}`);
-        }
-      };      
-    return (
-        <SessionProvider> //user authentication
-            <ImageKitProvider 
-            urlEndpoint={urlEndpoint} 
-            publicKey={publicKey} 
-            authenticator={authenticator}
-            >
-                {children}
-            </ImageKitProvider>
-        </SessionProvider>
-    );
+    </SessionProvider>
+  );
 }

@@ -13,7 +13,7 @@ export const authOptions:NextAuthOptions = {
                 password:{label:"password",type:"password"}
             },
             async authorize(credentials){
-               if(!credentials?.email.trim() || !credentials?.password.trim()){
+               if(!credentials?.email || !credentials?.password){
                   throw new Error("all the credentials are required");
                }
                try {
@@ -40,10 +40,13 @@ export const authOptions:NextAuthOptions = {
         })
     ],
     callbacks:{
-        async jwt({user,token}){
-            token.id = user.id
-            return token
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
         },
+        
         async session({session,token}){
             if(session.user){
                 session.user.id = token.id as string

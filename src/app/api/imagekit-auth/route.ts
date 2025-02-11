@@ -13,6 +13,11 @@ export async function GET() {
     return NextResponse.json(authParams);
   } catch (error) {
     console.log('error in the image-kit-auth: ');
-    throw error;
+    return NextResponse.json(
+      { error: "Authentication failed" },
+      {
+        status: 500,
+      }
+    );
   }
 }

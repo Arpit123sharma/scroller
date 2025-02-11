@@ -10,7 +10,7 @@ export default withAuth(
         callbacks:
         {
            authorized:({token,req}) => {
-            const {pathname} = req.nextUrl
+            const {pathname} = req?.nextUrl
             // for the authentication related routes
             if(
               pathname.startsWith("api/auth") ||
