@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Provider from "@/components/provider";
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: "scroller app",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <Toaster position="top-center" />
         <Provider>
           <main className="flex justify-center items-center h-screen">
            {children}
